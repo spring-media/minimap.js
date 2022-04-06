@@ -21,8 +21,9 @@
       "error",
       {
         "devDependencies": [
-          "src/**/*.spec.ts",
-          "src/demo/**/*.ts"
+          "jasmine/**/*.ts",
+          "playground/**/*.ts",
+          "src/**/*.spec.ts"
         ]
       }
     ],

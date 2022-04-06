@@ -55,7 +55,7 @@ export class Minimap {
   private viewportContainerScrollFactor: number;
   private contentContainerScrollFactor: number;
 
-  constructor(private readonly options: MinimapOptions) {
+  constructor(private readonly options: MinimapOptions = {}) {
     this.pageContainerElement = options.pageContainer || document.body;
     this.minimapContentElement = create(htmlTemplates.content);
     this.minimapDragElement = create(htmlTemplates.dragContainer);

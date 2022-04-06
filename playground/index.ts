@@ -1,9 +1,9 @@
-import { Minimap } from '../minimap';
-import { GradientPlugin } from '../plugins/gradient/gradient-plugin';
+import { Minimap } from '../src/minimap';
+import { GradientPlugin } from '../src/plugins/gradient/gradient-plugin';
 import rectangleSVGUrl from './images/rectangle.svg';
 
 import 'modern-css-reset/dist/reset.css';
-import '../styles/themes/default-theme.scss';
+import '../src/styles/themes/default-theme.scss';
 import './style.scss';
 import './gradient-plugin-overrides.scss';
 

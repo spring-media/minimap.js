@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest run",
+    "test": "karma start",
     "coverage": "vitest run --coverage",
     "prettier": "prettier --check 'src/**/*.ts'",
     "prettier:fix": "prettier --write 'src/**/*.ts'",
@@ -20,6 +20,8 @@
     "lint:fix": "npm run eslint:fix && npm run stylelint:fix"
   },
   "devDependencies": {
+    "@testing-library/jasmine-dom": "1.2.0",
+    "@types/jasmine": "3.5.14",
     "@typescript-eslint/eslint-plugin": "5.17.0",
     "@typescript-eslint/parser": "5.17.0",
     "cz-conventional-changelog": "3.3.0",
@@ -31,17 +33,23 @@
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-prettier": "4.0.0",
     "husky": "7.0.4",
+    "jasmine": "3.10.0",
+    "karma": "6.3.17",
+    "karma-chrome-launcher": "3.1.1",
+    "karma-jasmine": "4.0.2",
+    "karma-spec-reporter": "0.0.33",
+    "karma-typescript": "5.5.3",
     "lint-staged": "12.3.7",
     "modern-css-reset": "1.4.0",
     "prettier": "2.6.2",
+    "puppeteer": "13.5.2",
     "sass": "1.49.10",
     "stylelint": "14.6.1",
     "stylelint-config-standard-scss": "~2.0.0",
     "stylelint-order": "~5.0.0",
     "stylelint-scss": "~4.0.0",
     "typescript": "^4.5.4",
-    "vite": "^2.9.0",
-    "vitest": "0.8.1"
+    "vite": "^2.9.0"
   },
   "lint-staged": {
     "src/**/*.ts": "npm run eslint:fix",
