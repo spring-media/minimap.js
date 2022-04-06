@@ -1,23 +1,29 @@
 {
-  "name": "minimap",
+  "name": "@welt/minimap",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "author": "Adrian Ramin",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spring-media/minimap"
+  },
   "scripts": {
-    "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "test": "karma start",
+    "commit": "cz",
     "coverage": "vitest run --coverage",
-    "prettier": "prettier --check 'src/**/*.ts'",
-    "prettier:fix": "prettier --write 'src/**/*.ts'",
+    "dev": "vite",
     "eslint": "eslint 'src/**/*.ts'",
     "eslint:fix": "eslint --fix 'src/**/*.ts'",
+    "lint": "npm run eslint && npm run stylelint",
+    "lint:fix": "npm run eslint:fix && npm run stylelint:fix",
     "prepare": "husky install",
+    "prettier": "prettier --check 'src/**/*.ts'",
+    "prettier:fix": "prettier --write 'src/**/*.ts'",
+    "preview": "vite preview",
     "stylelint": "stylelint 'src/**/*.scss'",
     "stylelint:fix": "stylelint --fix 'src/**/*.scss'",
-    "commit": "cz",
-    "lint": "npm run eslint && npm run stylelint",
-    "lint:fix": "npm run eslint:fix && npm run stylelint:fix"
+    "test": "karma start"
   },
   "devDependencies": {
     "@testing-library/jasmine-dom": "1.2.0",
@@ -45,11 +51,11 @@
     "puppeteer": "13.5.2",
     "sass": "1.49.10",
     "stylelint": "14.6.1",
-    "stylelint-config-standard-scss": "~2.0.0",
-    "stylelint-order": "~5.0.0",
-    "stylelint-scss": "~4.0.0",
-    "typescript": "^4.5.4",
-    "vite": "^2.9.0"
+    "stylelint-config-standard-scss": "3.0.0",
+    "stylelint-order": "5.0.0",
+    "stylelint-scss": "4.2.0",
+    "typescript": "4.6.3",
+    "vite": "2.9.1"
   },
   "lint-staged": {
     "src/**/*.ts": "npm run eslint:fix",
