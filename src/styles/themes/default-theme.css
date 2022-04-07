@@ -1,0 +1,19 @@
+.minimap-default-theme {
+  border-left: 1px solid rgb(0 0 0 / 5%);
+  bottom: 0;
+  height: 100%;
+  margin-bottom: auto;
+  margin-top: auto;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100px;
+}
+
+.minimap-default-theme .minimap__element {
+  overflow: hidden;
+}
+
+.minimap-default-theme .minimap__drag-container {
+  background-color: rgb(255 255 255 / 20%);
+}

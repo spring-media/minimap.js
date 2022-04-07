@@ -9,13 +9,12 @@ import {
   throttle,
 } from './utils';
 
-import './styles/component/minimap.scss';
+import './styles/component/minimap.css';
 
 export type MinimapOptions = {
   pageContainer?: HTMLElement;
   staticElements?: HTMLElement[];
   dynamicElements?: ElementConfig[];
-  position?: 'right-centered';
   theme?: string;
   plugins?: Plugin[];
 };
@@ -73,16 +72,17 @@ export class Minimap {
     this.minimapRootElement.appendChild(this.minimapViewportElement);
   }
 
-  public render(): void {
+  public render(): Minimap {
     this.initPlugins();
     this.setTheme();
-    this.setPosition();
     this.addToDom();
     this.renderContent();
     this.onDragStart();
     this.onScroll();
     this.onPageContainerResize();
     this.onWindowResize();
+
+    return this;
   }
 
   public on(event: string, callback: VoidFunction): void {
@@ -98,6 +98,10 @@ export class Minimap {
     };
   }
 
+  public destroy(): void {
+    this.minimapRootElement.remove();
+  }
+
   private addToDom() {
     document.body.appendChild(this.minimapRootElement);
   }
@@ -106,12 +110,8 @@ export class Minimap {
     this.minimapRootElement.classList.add(this.options.theme ?? 'minimap-default-theme');
   }
 
-  private setPosition(): void {
-    this.minimapRootElement.classList.add(this.options.position ?? 'minimap--is-right-centered');
-  }
-
   private renderContent(): void {
-    this.showLoadingSpinner();
+    this.setLoadingClass();
     this.updateFactors();
     this.setContentHeight();
     this.setMaxViewportHeight();
@@ -133,7 +133,7 @@ export class Minimap {
     this.minimapContentElement.style.height = `${getPageHeightInPx() * this.scaleFactor}px`;
   }
 
-  private showLoadingSpinner(): void {
+  private setLoadingClass(): void {
     this.minimapRootElement.classList.add(cssClasses.loading);
   }
 

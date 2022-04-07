@@ -1,6 +1,9 @@
 export type Position = { top: number; left: number };
 export type Dimensions = { width: number; height: number };
 
+export const THROTTLE_DEFAULT_WAIT_TIME_IN_MS = 50;
+export const DEBOUNCE_DEFAULT_WAIT_TIME_IN_MS = 300;
+
 export function getViewportHeightInPx(): number {
   return Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 }
@@ -45,7 +48,7 @@ export function getScrollInPercentageAsDecimal(): number {
   return scrollYPos / (pageHeight - viewportHeight);
 }
 
-export function debounce(callback: VoidFunction, waitTimeInMs = 300): VoidFunction {
+export function debounce(callback: VoidFunction, waitTimeInMs = DEBOUNCE_DEFAULT_WAIT_TIME_IN_MS): VoidFunction {
   let timeoutId: number | null = null;
 
   return (): void => {
@@ -60,7 +63,7 @@ export function debounce(callback: VoidFunction, waitTimeInMs = 300): VoidFuncti
   };
 }
 
-export function throttle(callback: VoidFunction, waitTimeInMs = 50): VoidFunction {
+export function throttle(callback: VoidFunction, waitTimeInMs = THROTTLE_DEFAULT_WAIT_TIME_IN_MS): VoidFunction {
   let timeoutId: number | null = null;
 
   return (): void => {

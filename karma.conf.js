@@ -8,6 +8,7 @@ module.exports = function (config) {
     basePath: './',
     files: [
       'jasmine/*.ts',
+      'src/**/*.css',
       {
         pattern: 'src/**/*.ts',
         type: 'js', // Silences the warning "Unable to determine file type from the file extension, defaulting to js".

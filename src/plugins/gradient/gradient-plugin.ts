@@ -1,6 +1,6 @@
 import { Minimap, Plugin } from '../../minimap';
 
-import './gradient-plugin.scss';
+import './gradient-plugin.css';
 import { getScrollInPercentageAsDecimal } from '../../utils';
 
 const cssClasses = {
