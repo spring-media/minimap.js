@@ -1,4 +1,5 @@
-export type Position = { top: number; left: number; width: number; height: number };
+export type Position = { top: number; left: number };
+export type Dimensions = { width: number; height: number };
 
 export function getViewportHeightInPx(): number {
   return Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -11,8 +12,14 @@ export function getPageHeightInPx(): number {
   return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
 }
 
+export function dimensions(element: HTMLElement): Dimensions {
+  const { width, height } = element.getBoundingClientRect();
+
+  return { width, height };
+}
+
 export function position(element: HTMLElement, parentElement?: HTMLElement): Position {
-  const pos: Position = { left: 0, top: 0, width: 0, height: 0 };
+  const pos: Position = { left: 0, top: 0 };
 
   if (parentElement) {
     const thisPos = position(element);
@@ -20,15 +27,11 @@ export function position(element: HTMLElement, parentElement?: HTMLElement): Pos
 
     pos.left = thisPos.left - parentPos.left;
     pos.top = thisPos.top - parentPos.top;
-    pos.width = thisPos.width;
-    pos.height = thisPos.height;
   } else {
     const rect = element.getBoundingClientRect();
 
     pos.top = rect.top + window.scrollY;
     pos.left = rect.left + window.scrollX;
-    pos.width = rect.width;
-    pos.height = rect.height;
   }
 
   return pos;
@@ -42,7 +45,7 @@ export function getScrollInPercentageAsDecimal(): number {
   return scrollYPos / (pageHeight - viewportHeight);
 }
 
-export function debounce(callback: VoidFunction, timeoutInMs = 300): VoidFunction {
+export function debounce(callback: VoidFunction, waitTimeInMs = 300): VoidFunction {
   let timeoutId: number | null = null;
 
   return (): void => {
@@ -53,11 +56,11 @@ export function debounce(callback: VoidFunction, timeoutInMs = 300): VoidFunctio
     timeoutId = window.setTimeout(() => {
       callback();
       timeoutId = null;
-    }, timeoutInMs);
+    }, waitTimeInMs);
   };
 }
 
-export function throttle(callback: VoidFunction, timeoutInMs = 50): VoidFunction {
+export function throttle(callback: VoidFunction, waitTimeInMs = 50): VoidFunction {
   let timeoutId: number | null = null;
 
   return (): void => {
@@ -68,19 +71,11 @@ export function throttle(callback: VoidFunction, timeoutInMs = 50): VoidFunction
     timeoutId = window.setTimeout(() => {
       callback();
       timeoutId = null;
-    }, timeoutInMs);
+    }, waitTimeInMs);
   };
 }
 
-/**
- * HTML as string to (first) Node. Useful when receiving HTML via ajax.
- *
- * example:
- * const html: string = "<div>1</div><span>2</span>";
- * const node: HTMLElement = create(html);
- * node.textContent === "1"; // not "2"
- */
-export function create(html: string): HTMLElement {
+export function createElement(html: string): HTMLElement {
   const element: HTMLElement = document.createElement('div');
   element.innerHTML = html.trim();
 

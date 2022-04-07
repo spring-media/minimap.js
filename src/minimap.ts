@@ -1,6 +1,7 @@
 import {
-  create,
+  createElement,
   debounce,
+  dimensions,
   getPageHeightInPx,
   getScrollInPercentageAsDecimal,
   getViewportHeightInPx,
@@ -57,18 +58,18 @@ export class Minimap {
 
   constructor(private readonly options: MinimapOptions = {}) {
     this.pageContainerElement = options.pageContainer || document.body;
-    this.minimapContentElement = create(htmlTemplates.content);
-    this.minimapDragElement = create(htmlTemplates.dragContainer);
+    this.minimapContentElement = createElement(htmlTemplates.content);
+    this.minimapDragElement = createElement(htmlTemplates.dragContainer);
     this.scaleFactor = 1;
     this.contentContainerScrollFactor = 1;
     this.viewportContainerScrollFactor = 1;
 
-    const viewportElement = create(htmlTemplates.viewport);
+    const viewportElement = createElement(htmlTemplates.viewport);
     viewportElement.appendChild(this.minimapContentElement);
     viewportElement.appendChild(this.minimapDragElement);
     this.minimapViewportElement = viewportElement;
 
-    this.minimapRootElement = create(htmlTemplates.minimap);
+    this.minimapRootElement = createElement(htmlTemplates.minimap);
     this.minimapRootElement.appendChild(this.minimapViewportElement);
   }
 
@@ -279,8 +280,9 @@ export class Minimap {
       .filter(isAtLeastOnePixelHigh)
       .filter(conditionIsMet)
       .reduce((previousElements: HTMLElement[], element: HTMLElement) => {
-        const { height, left, top, width } = position(element, this.pageContainerElement);
-        const newElement = create(htmlTemplates.element);
+        const { height, width } = dimensions(element);
+        const { left, top } = position(element, this.pageContainerElement);
+        const newElement = createElement(htmlTemplates.element);
         newElement.style.top = `${top * fullHeightContainerScrollFactor}px`;
         newElement.style.left = `${left * fullHeightContainerScrollFactor}px`;
         newElement.style.width = `${width * fullHeightContainerScrollFactor}px`;

@@ -1,7 +1,6 @@
 import { Minimap } from './minimap';
 
 function renderHtml({ pageHeightInPx }: { pageHeightInPx: number }): void {
-  document.body.style.margin = '0';
   document.body.innerHTML = `
       <div style="height: ${pageHeightInPx}px">
         <header style="height: 10%">Header</header>

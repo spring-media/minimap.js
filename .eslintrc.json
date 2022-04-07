@@ -36,7 +36,8 @@
       }
     ],
     "@typescript-eslint/member-ordering": "warn",
-    "@typescript-eslint/no-unused-vars": "warn"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-use-before-define": "off"
   },
   "settings": {
     "import/parsers": {

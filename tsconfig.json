@@ -16,6 +16,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/karma-viewport"
+    ]
   },
   "include": [
     "src",
