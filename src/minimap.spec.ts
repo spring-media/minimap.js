@@ -1,6 +1,6 @@
-import sinon, { SinonFakeTimers, SinonSpy } from 'sinon';
+import sinon, { SinonFakeTimers, SinonFakeTimersConfig, SinonSpy } from 'sinon';
 import { Minimap } from './minimap';
-import { createElement, THROTTLE_DEFAULT_WAIT_TIME_IN_MS } from './utils';
+import { createElement, DEBOUNCE_DEFAULT_WAIT_TIME_IN_MS, THROTTLE_DEFAULT_WAIT_TIME_IN_MS } from './utils';
 
 function renderHtml({ pageHeightInPx }: { pageHeightInPx: number }): HTMLElement {
   const newElement = createElement(`
@@ -37,16 +37,18 @@ describe('Minimap', () => {
   let clock: SinonFakeTimers;
 
   beforeEach(() => {
-    clock = sinon.useFakeTimers();
+    // Cast is necessary as Sinon types are wrong. https://sinonjs.org/releases/latest/fake-timers/#var-clock--sinonusefaketimersconfig says all
+    // the config from https://github.com/sinonjs/fake-timers/#var-clock--faketimersinstallconfig can be used.
+    clock = sinon.useFakeTimers({ shouldClearNativeTimers: true } as unknown as Partial<SinonFakeTimersConfig>);
     fixture = renderHtml({ pageHeightInPx: 50_000 });
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     viewport.set(1_000 + scrollbarWidth, 1_000);
   });
 
   afterEach(() => {
+    clock.restore();
     minimap.destroy();
     fixture.remove();
-    clock.restore();
   });
 
   it('should use the default theme by default when not set via options', () => {

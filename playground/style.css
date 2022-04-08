@@ -18,16 +18,9 @@ footer {
   align-items: center;
   background-color: rgb(255 255 255 / 50%);
   display: flex;
+  height: 200px;
   justify-content: center;
   padding: 0 1rem;
-}
-
-header {
-  height: 150px;
-}
-
-footer {
-  height: 200px;
 }
 
 h1 {

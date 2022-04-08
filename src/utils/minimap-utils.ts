@@ -53,7 +53,7 @@ export function debounce(callback: VoidFunction, waitTimeInMs = DEBOUNCE_DEFAULT
 
   return (): void => {
     if (timeoutId) {
-      clearTimeout(timeoutId);
+      window.clearTimeout(timeoutId);
     }
 
     timeoutId = window.setTimeout(() => {
