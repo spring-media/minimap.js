@@ -126,26 +126,6 @@ describe('Minimap', () => {
     expect(document.querySelector('.minimap-header-element')).toHaveStyle('background-color: #fff');
   });
 
-  it('should init plugins', () => {
-    const spy: SinonSpy = sinon.spy();
-    minimap = new Minimap({
-      plugins: [
-        {
-          init(): void {
-            spy();
-          },
-        },
-        {
-          init(): void {
-            spy();
-          },
-        },
-      ],
-    }).render();
-
-    expect(spy.callCount).toBe(2);
-  });
-
   it('should emit throttled scroll events', async () => {
     const spy: SinonSpy = sinon.spy();
     minimap = new Minimap();
@@ -207,5 +187,31 @@ describe('Minimap', () => {
     expect(window.scrollY).toBe((PAGE_HEIGHT_IN_PX - VIEWPORT_HEIGHT_IN_PX) / 2);
     expect(minimap.getElements().content.style.transform).toEqual('translateY(-2000px)');
     expect(minimap.getElements().dragContainer.style.transform).toEqual('translateY(500px)');
+  });
+
+  it('should not show a start gradient when the page was not scrolled down', async () => {
+    minimap = new Minimap().render();
+    expect(minimap.getElements().viewport).not.toHaveClass('minimap--has-start-gradient');
+  });
+
+  it('should show a start gradient when the page was scrolled down', async () => {
+    minimap = new Minimap().render();
+    await scrollToYPosition(1);
+    clock.tick(THROTTLE_DEFAULT_WAIT_TIME_IN_MS);
+
+    expect(minimap.getElements().viewport).toHaveClass('minimap--has-start-gradient');
+  });
+
+  it('should show an end gradient when the page is not scrolled to the end', async () => {
+    minimap = new Minimap().render();
+    expect(minimap.getElements().viewport).toHaveClass('minimap--has-end-gradient');
+  });
+
+  it('should not show an end gradient when the page is scrolled to the end', async () => {
+    minimap = new Minimap().render();
+    await scrollToYPosition(PAGE_HEIGHT_IN_PX - VIEWPORT_HEIGHT_IN_PX);
+    clock.tick(THROTTLE_DEFAULT_WAIT_TIME_IN_MS);
+
+    expect(minimap.getElements().viewport).not.toHaveClass('minimap--has-end-gradient');
   });
 });

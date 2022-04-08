@@ -21,6 +21,7 @@
       "error",
       {
         "devDependencies": [
+          "vite.config.ts",
           "jasmine/**/*.ts",
           "playground/**/*.ts",
           "src/**/*.spec.ts"

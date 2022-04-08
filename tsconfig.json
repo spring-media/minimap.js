@@ -19,9 +19,10 @@
     "typeRoots": [
       "node_modules/@types",
       "node_modules/karma-viewport"
-    ]
+    ],
   },
   "include": [
+    "vite.config.ts",
     "src",
     "jasmine",
     "playground"

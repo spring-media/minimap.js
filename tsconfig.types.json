@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "dist/types",
+    "declaration": true,
+    "emitDeclarationOnly": true
+  },
+  "include": [
+    "src/minimap.ts",
+  ],
+  "exclude": [
+    "utils",
+  ]
+}

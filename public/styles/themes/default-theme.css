@@ -1,5 +1,5 @@
 .minimap-default-theme {
-  border-left: 1px solid rgb(0 0 0 / 5%);
+  border-left: 1px solid rgba(0, 0, 0, 5%);
   bottom: 0;
   height: 100%;
   margin-bottom: auto;
@@ -15,5 +15,5 @@
 }
 
 .minimap-default-theme .minimap__drag-container {
-  background-color: rgb(255 255 255 / 20%);
+  background-color: rgba(255, 255, 255, 20%);
 }

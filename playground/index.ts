@@ -1,14 +1,11 @@
 import { Minimap } from '../src/minimap';
-import { GradientPlugin } from '../src/plugins/gradient/gradient-plugin';
 import rectangleSVGUrl from './images/rectangle.svg';
 
 import 'modern-css-reset/dist/reset.css';
-import '../src/styles/themes/default-theme.css';
 import './style.css';
 import './gradient-plugin-overrides.css';
 
 const minimap = new Minimap({
-  plugins: [GradientPlugin],
   dynamicElements: [
     {
       selector: 'header',

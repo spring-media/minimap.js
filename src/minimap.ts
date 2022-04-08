@@ -1,4 +1,3 @@
-import './styles/component/minimap.css';
 import {
   createElement,
   debounce,
@@ -15,11 +14,6 @@ export type MinimapOptions = {
   staticElements?: HTMLElement[];
   dynamicElements?: ElementConfig[];
   theme?: string;
-  plugins?: Plugin[];
-};
-
-export type Plugin = {
-  init: (minimap: Minimap) => void;
 };
 
 export type ElementConfig = {
@@ -42,6 +36,8 @@ const htmlTemplates = {
 
 const cssClasses = {
   loading: 'minimap--is-loading',
+  startGradient: 'minimap--has-start-gradient',
+  endGradient: 'minimap--has-end-gradient',
 };
 
 export class Minimap {
@@ -72,9 +68,9 @@ export class Minimap {
   }
 
   public render(): Minimap {
-    this.initPlugins();
     this.setTheme();
     this.addToDom();
+    this.initGradients();
     this.renderContent();
     this.onDragStart();
     this.onScroll();
@@ -127,7 +123,7 @@ export class Minimap {
     this.hideLoadingSpinner();
   }
 
-  private debouncedRenderContent = debounce(this.renderContent);
+  private debouncedRenderContent = debounce(() => this.renderContent());
 
   // We need to restrict the viewport height for the case where the content within the minimap is smaller than the minimap height.
   // Otherwise, the drag container could be scrolled until the end of the minimap.
@@ -203,11 +199,7 @@ export class Minimap {
   }
 
   private onPageContainerResize(): void {
-    const observer = new ResizeObserver(
-      debounce((): void => {
-        this.renderContent();
-      }),
-    );
+    const observer = new ResizeObserver(debounce(() => this.renderContent()));
 
     observer.observe(this.pageContainerElement);
   }
@@ -326,9 +318,23 @@ export class Minimap {
       }, []);
   }
 
-  private initPlugins() {
-    this.options.plugins?.forEach((plugin: Plugin) => {
-      plugin.init(this);
-    });
+  private initGradients() {
+    this.setStartAndEndGradients();
+    this.on('minimap.scroll', () => this.setStartAndEndGradients());
+  }
+
+  private setStartAndEndGradients(): void {
+    if (getScrollInPercentageAsDecimal() > 0) {
+      this.minimapViewportElement.classList.add(cssClasses.startGradient);
+
+      if (getScrollInPercentageAsDecimal() < 1) {
+        this.minimapViewportElement.classList.add(cssClasses.endGradient);
+      } else {
+        this.minimapViewportElement.classList.remove(cssClasses.endGradient);
+      }
+    } else {
+      this.minimapViewportElement.classList.add(cssClasses.endGradient);
+      this.minimapViewportElement.classList.remove(cssClasses.startGradient);
+    }
   }
 }

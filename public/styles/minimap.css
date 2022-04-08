@@ -52,3 +52,20 @@
   position: absolute;
   width: 100%;
 }
+
+.minimap--has-start-gradient::before {
+  content: "";
+  left: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 0;
+}
+
+.minimap--has-end-gradient::after {
+  bottom: 0;
+  content: "";
+  left: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 0;
+}
