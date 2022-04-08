@@ -98,6 +98,11 @@ export class Minimap {
   }
 
   public destroy(): void {
+    window.removeEventListener('resize', this.debouncedRenderContent);
+    window.removeEventListener('scroll', this.throttledScrollListener);
+    window.removeEventListener('mousemove', this.updateScrollPositionOnDragMove);
+    window.removeEventListener('mouseup', this.mouseUpListener);
+    this.minimapViewportElement.removeEventListener('mousedown', this.mouseDownListener);
     this.minimapRootElement.remove();
   }
 
@@ -121,6 +126,8 @@ export class Minimap {
     this.renderElements();
     this.hideLoadingSpinner();
   }
+
+  private debouncedRenderContent = debounce(this.renderContent);
 
   // We need to restrict the viewport height for the case where the content within the minimap is smaller than the minimap height.
   // Otherwise, the drag container could be scrolled until the end of the minimap.
@@ -149,12 +156,7 @@ export class Minimap {
   }
 
   private onWindowResize(): void {
-    window.addEventListener(
-      'resize',
-      debounce(() => {
-        this.renderContent();
-      }),
-    );
+    window.addEventListener('resize', this.debouncedRenderContent);
   }
 
   private updateFactors(): void {
@@ -165,15 +167,14 @@ export class Minimap {
     this.contentContainerScrollFactor = getPageHeightInPx() / this.minimapContentElement.offsetHeight;
   }
 
+  private throttledScrollListener = throttle(() => {
+    this.dispatchScrollEvent();
+    this.setDragElementPosition();
+    this.setContentPosition();
+  });
+
   private onScroll(): void {
-    window.addEventListener(
-      'scroll',
-      throttle(() => {
-        this.dispatchScrollEvent();
-        this.setDragElementPosition();
-        this.setContentPosition();
-      }),
-    );
+    window.addEventListener('scroll', this.throttledScrollListener);
   }
 
   private dispatchScrollEvent(): void {
@@ -212,35 +213,39 @@ export class Minimap {
   }
 
   private onDragStart(): void {
-    this.minimapViewportElement.addEventListener('mousedown', (event: MouseEvent): void => {
-      const leftMouseButton = 0;
-
-      if (event.button === leftMouseButton) {
-        const isViewportClick = event.target !== this.minimapDragElement;
-
-        if (isViewportClick) {
-          this.updateScrollPositionOnViewportClick(event);
-        }
-
-        window.addEventListener('mousemove', this.updateScrollPositionOnDragMove);
-        window.addEventListener('mouseup', (): void => {
-          window.removeEventListener('mousemove', this.updateScrollPositionOnDragMove);
-        });
-      }
-    });
+    this.minimapViewportElement.addEventListener('mousedown', this.mouseDownListener);
   }
 
-  private updateScrollPositionOnViewportClick = (event: MouseEvent): void => {
-    const centeredDistance = this.getCenteredDistanceToTopOfPageInPx(event);
-    const scrollYPosition =
-      (this.getContentElementTranslateYValue() + centeredDistance) * this.contentContainerScrollFactor;
+  private mouseDownListener = (event: MouseEvent): void => {
+    const leftMouseButton = 0;
 
-    window.scrollTo({ top: scrollYPosition });
+    if (event.button === leftMouseButton) {
+      const isViewportClick = event.target !== this.minimapDragElement;
+
+      if (isViewportClick) {
+        this.updateScrollPositionOnViewportClick(event);
+      }
+
+      window.addEventListener('mousemove', this.updateScrollPositionOnDragMove);
+      window.addEventListener('mouseup', this.mouseUpListener);
+    }
+  };
+
+  private mouseUpListener = (): void => {
+    window.removeEventListener('mousemove', this.updateScrollPositionOnDragMove);
   };
 
   private updateScrollPositionOnDragMove = (event: MouseEvent): void => {
     const centeredDistance = this.getCenteredDistanceToTopOfPageInPx(event);
     const scrollYPosition = centeredDistance * this.viewportContainerScrollFactor;
+
+    window.scrollTo({ top: scrollYPosition });
+  };
+
+  private updateScrollPositionOnViewportClick = (event: MouseEvent): void => {
+    const centeredDistance = this.getCenteredDistanceToTopOfPageInPx(event);
+    const scrollYPosition =
+      (this.getContentElementTranslateYValue() + centeredDistance) * this.contentContainerScrollFactor;
 
     window.scrollTo({ top: scrollYPosition });
   };

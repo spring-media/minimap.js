@@ -26,9 +26,14 @@ describe('Minimap', () => {
     fixture.remove();
   });
 
-  it('should use the default theme by default when not set via options', () => {
+  it('should use the default theme when not set via options', () => {
     minimap = new Minimap().render();
     expect(document.querySelector('.minimap-default-theme')).toBeInTheDocument();
+  });
+
+  it('should use a custom theme when set via options', () => {
+    minimap = new Minimap({ theme: 'custom-theme' }).render();
+    expect(minimap.getElements().minimap).toHaveClass('custom-theme');
   });
 
   it('should render all elements and also their children', () => {
@@ -158,7 +163,7 @@ describe('Minimap', () => {
     expect(spy.callCount).toBe(2);
   });
 
-  it('should change the position of the minimap content container when scrolled', async () => {
+  it('should change the position of the content container when scrolled', async () => {
     minimap = new Minimap().render();
 
     await scrollToYPosition((PAGE_HEIGHT_IN_PX - VIEWPORT_HEIGHT_IN_PX) / 2);
@@ -170,7 +175,7 @@ describe('Minimap', () => {
     expect(minimap.getElements().content.style.transform).toEqual('translateY(-4000px)');
   });
 
-  it('should change the position of the minimap drag container when scrolled', async () => {
+  it('should change the position of the drag container when scrolled', async () => {
     minimap = new Minimap().render();
 
     await scrollToYPosition((PAGE_HEIGHT_IN_PX - VIEWPORT_HEIGHT_IN_PX) / 2);
