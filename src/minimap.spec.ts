@@ -1,35 +1,10 @@
 import sinon, { SinonFakeTimers, SinonFakeTimersConfig, SinonSpy } from 'sinon';
 import { Minimap } from './minimap';
-import { createElement, DEBOUNCE_DEFAULT_WAIT_TIME_IN_MS, THROTTLE_DEFAULT_WAIT_TIME_IN_MS } from './utils';
+import { createElement, THROTTLE_DEFAULT_WAIT_TIME_IN_MS } from './utils';
+import { renderHtml, scrollToYPosition, waitForScrollEvent } from './utils/test-utils';
 
-function renderHtml({ pageHeightInPx }: { pageHeightInPx: number }): HTMLElement {
-  const newElement = createElement(`
-    <div style="height: ${pageHeightInPx}px">
-      <header style="height: 10%">Header</header>
-      <main>
-        <p>Text 1</p>
-        <p>Text 2</p>
-        <p>Text 3</p>
-      </main>
-      <footer style="height: 10%">Footer</footer>
-    </div>
-  `);
-  document.body.appendChild(newElement);
-
-  return newElement;
-}
-
-async function scrollToYPosition(position: number): Promise<void> {
-  const scrollEventListener = waitForScrollEvent();
-  window.scrollTo(0, position);
-  await scrollEventListener;
-}
-
-function waitForScrollEvent(): Promise<void> {
-  return new Promise<void>((resolve) => {
-    window.addEventListener('scroll', () => resolve(), { once: true });
-  });
-}
+const PAGE_HEIGHT_IN_PX = 50_000;
+const VIEWPORT_HEIGHT_IN_PX = 1_000;
 
 describe('Minimap', () => {
   let minimap: Minimap;
@@ -40,9 +15,9 @@ describe('Minimap', () => {
     // Cast is necessary as Sinon types are wrong. https://sinonjs.org/releases/latest/fake-timers/#var-clock--sinonusefaketimersconfig says all
     // the config from https://github.com/sinonjs/fake-timers/#var-clock--faketimersinstallconfig can be used.
     clock = sinon.useFakeTimers({ shouldClearNativeTimers: true } as unknown as Partial<SinonFakeTimersConfig>);
-    fixture = renderHtml({ pageHeightInPx: 50_000 });
+    fixture = renderHtml({ pageHeightInPx: PAGE_HEIGHT_IN_PX });
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    viewport.set(1_000 + scrollbarWidth, 1_000);
+    viewport.set(1_000 + scrollbarWidth, VIEWPORT_HEIGHT_IN_PX);
   });
 
   afterEach(() => {
@@ -186,11 +161,11 @@ describe('Minimap', () => {
   it('should change the position of the minimap content container when scrolled', async () => {
     minimap = new Minimap().render();
 
-    await scrollToYPosition(24_500);
+    await scrollToYPosition((PAGE_HEIGHT_IN_PX - VIEWPORT_HEIGHT_IN_PX) / 2);
     clock.tick(THROTTLE_DEFAULT_WAIT_TIME_IN_MS);
     expect(minimap.getElements().content.style.transform).toEqual('translateY(-2000px)');
 
-    await scrollToYPosition(49_000);
+    await scrollToYPosition(PAGE_HEIGHT_IN_PX - VIEWPORT_HEIGHT_IN_PX);
     clock.tick(THROTTLE_DEFAULT_WAIT_TIME_IN_MS);
     expect(minimap.getElements().content.style.transform).toEqual('translateY(-4000px)');
   });
@@ -198,11 +173,11 @@ describe('Minimap', () => {
   it('should change the position of the minimap drag container when scrolled', async () => {
     minimap = new Minimap().render();
 
-    await scrollToYPosition(24_500);
+    await scrollToYPosition((PAGE_HEIGHT_IN_PX - VIEWPORT_HEIGHT_IN_PX) / 2);
     clock.tick(THROTTLE_DEFAULT_WAIT_TIME_IN_MS);
     expect(minimap.getElements().dragContainer.style.transform).toEqual('translateY(500px)');
 
-    await scrollToYPosition(49_000);
+    await scrollToYPosition(PAGE_HEIGHT_IN_PX - VIEWPORT_HEIGHT_IN_PX);
     clock.tick(THROTTLE_DEFAULT_WAIT_TIME_IN_MS);
     expect(minimap.getElements().dragContainer.style.transform).toEqual('translateY(1000px)');
   });
@@ -224,7 +199,7 @@ describe('Minimap', () => {
     await waitForScrollEvent();
     clock.tick(THROTTLE_DEFAULT_WAIT_TIME_IN_MS);
 
-    expect(window.scrollY).toBe(24_500);
+    expect(window.scrollY).toBe((PAGE_HEIGHT_IN_PX - VIEWPORT_HEIGHT_IN_PX) / 2);
     expect(minimap.getElements().content.style.transform).toEqual('translateY(-2000px)');
     expect(minimap.getElements().dragContainer.style.transform).toEqual('translateY(500px)');
   });

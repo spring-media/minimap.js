@@ -34,6 +34,7 @@ module.exports = function (config) {
       coverageOptions: {
         exclude: [
           /\.(d|spec)\.ts$/i,
+          /utils\/test-utils\.ts$/,
           /jasmine/
         ],
       },

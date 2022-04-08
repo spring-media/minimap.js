@@ -1,7 +1,7 @@
 import { Minimap, Plugin } from '../../minimap';
+import { getScrollInPercentageAsDecimal } from '../../utils';
 
 import './gradient-plugin.css';
-import { getScrollInPercentageAsDecimal } from '../../utils';
 
 const cssClasses = {
   startGradient: 'minimap-gradient-plugin__start',
@@ -18,6 +18,7 @@ function setStartAndEndGradients(viewportElement: HTMLElement): void {
       viewportElement.classList.remove(cssClasses.endGradient);
     }
   } else {
+    viewportElement.classList.add(cssClasses.endGradient);
     viewportElement.classList.remove(cssClasses.startGradient);
   }
 }

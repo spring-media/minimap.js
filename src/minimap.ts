@@ -1,3 +1,4 @@
+import './styles/component/minimap.css';
 import {
   createElement,
   debounce,
@@ -8,8 +9,6 @@ import {
   position,
   throttle,
 } from './utils';
-
-import './styles/component/minimap.css';
 
 export type MinimapOptions = {
   pageContainer?: HTMLElement;
