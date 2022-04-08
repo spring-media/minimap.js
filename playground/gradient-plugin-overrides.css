@@ -1,9 +1,0 @@
-.minimap-gradient-plugin__start::before {
-  background: linear-gradient(to bottom, rgb(255 255 255 / 40%) 0%, transparent 100%);
-  height: 60px;
-}
-
-.minimap-gradient-plugin__end::after {
-  background: linear-gradient(to top, rgb(255 255 255 / 40%) 0%, transparent 100%);
-  height: 60px;
-}

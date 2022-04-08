@@ -3,7 +3,6 @@ import rectangleSVGUrl from './images/rectangle.svg';
 
 import 'modern-css-reset/dist/reset.css';
 import './style.css';
-import './gradient-plugin-overrides.css';
 
 const minimap = new Minimap({
   dynamicElements: [

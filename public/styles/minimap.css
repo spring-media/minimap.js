@@ -54,7 +54,9 @@
 }
 
 .minimap--has-start-gradient::before {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 20%) 0%, transparent 100%);
   content: "";
+  height: 50px;
   left: 0;
   position: absolute;
   width: 100%;
@@ -62,8 +64,10 @@
 }
 
 .minimap--has-end-gradient::after {
+  background: linear-gradient(to top, rgba(255, 255, 255, 20%) 0%, transparent 100%);
   bottom: 0;
   content: "";
+  height: 50px;
   left: 0;
   position: absolute;
   width: 100%;
