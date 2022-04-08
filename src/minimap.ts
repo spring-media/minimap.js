@@ -253,76 +253,77 @@ export class Minimap {
   }
 
   private getDynamicElements(): HTMLElement[] {
+    const { dynamicElements = [] } = this.options;
     const fullHeightContainerScrollFactor = this.minimapContentElement.clientHeight / getPageHeightInPx();
 
-    return (this.options.dynamicElements ?? []).reduce(
-      (previousElements: HTMLElement[], elementConfig: ElementConfig) => {
-        return [...previousElements, ...this.createElements(elementConfig, fullHeightContainerScrollFactor)];
-      },
-      [],
-    );
+    return dynamicElements.reduce((previousElements: HTMLElement[], elementConfig: ElementConfig) => {
+      return [...previousElements, ...this.createElements(elementConfig, fullHeightContainerScrollFactor)];
+    }, []);
   }
 
   private createElements(
-    elementConfig: ElementConfig,
+    {
+      backgroundColor,
+      childElements = [],
+      classes,
+      condition,
+      imageUrl,
+      render: renderElement,
+      selector,
+    }: ElementConfig,
     fullHeightContainerScrollFactor: number,
     parentElement: HTMLElement = document.body,
   ): HTMLElement[] {
-    const isAtLeastOnePixelHigh = (element: HTMLElement): boolean => {
-      return element.getBoundingClientRect().height > 0;
-    };
+    const isAtLeastOnePixelHigh = (element: HTMLElement) => element.getBoundingClientRect().height > 0;
+    const conditionIsMet = (element: HTMLElement) => condition?.(element) ?? true;
 
-    const conditionIsMet = (element: HTMLElement): boolean => {
-      return elementConfig.condition?.(element) ?? true;
-    };
-
-    return Array.from(parentElement.querySelectorAll<HTMLElement>(elementConfig.selector))
+    return Array.from(parentElement.querySelectorAll<HTMLElement>(selector))
       .filter(isAtLeastOnePixelHigh)
       .filter(conditionIsMet)
       .reduce((previousElements: HTMLElement[], element: HTMLElement) => {
         const { height, width } = dimensions(element);
         const { left, top } = position(element, this.pageContainerElement);
         const newElement = createElement(htmlTemplates.element);
+
         newElement.style.top = `${top * fullHeightContainerScrollFactor}px`;
         newElement.style.left = `${left * fullHeightContainerScrollFactor}px`;
         newElement.style.width = `${width * fullHeightContainerScrollFactor}px`;
         newElement.style.height = `${height * fullHeightContainerScrollFactor}px`;
 
-        if (elementConfig.backgroundColor) {
-          newElement.style.backgroundColor = elementConfig.backgroundColor;
+        if (backgroundColor) {
+          newElement.style.backgroundColor = backgroundColor;
         }
 
-        if (elementConfig.classes) {
-          newElement.classList.add(...elementConfig.classes);
+        if (classes) {
+          newElement.classList.add(...classes);
         }
 
-        if (elementConfig.render) {
-          newElement.innerHTML = elementConfig.render(element);
+        if (renderElement) {
+          newElement.innerHTML = renderElement(element);
         }
 
-        if (elementConfig.imageUrl) {
+        if (imageUrl) {
           const image = document.createElement('img');
-          image.setAttribute('src', elementConfig.imageUrl);
+          image.setAttribute('src', imageUrl);
           newElement.appendChild(image);
         }
 
-        const renderedChildElements: HTMLElement[] =
-          elementConfig.childElements?.reduce(
-            (previousChildElements: HTMLElement[], childElementConfig: ElementConfig) => {
-              return [
-                ...previousChildElements,
-                ...this.createElements(childElementConfig, fullHeightContainerScrollFactor, element),
-              ];
-            },
-            [],
-          ) ?? [];
+        const renderedChildElements: HTMLElement[] = childElements.reduce(
+          (previousChildElements: HTMLElement[], childElementConfig: ElementConfig) => {
+            return [
+              ...previousChildElements,
+              ...this.createElements(childElementConfig, fullHeightContainerScrollFactor, element),
+            ];
+          },
+          [],
+        );
 
         return [...previousElements, newElement, ...renderedChildElements];
       }, []);
   }
 
   private initPlugins() {
-    (this.options.plugins ?? []).forEach((plugin: Plugin) => {
+    this.options.plugins?.forEach((plugin: Plugin) => {
       plugin.init(this);
     });
   }
