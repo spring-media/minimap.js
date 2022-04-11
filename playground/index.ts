@@ -1,5 +1,5 @@
 import { Minimap } from '../src/minimap';
-import rectangleSVGUrl from './images/rectangle.svg';
+import squareSVGUrl from './images/square.svg';
 
 import 'modern-css-reset/dist/reset.css';
 import './style.css';
@@ -22,7 +22,7 @@ const minimap = new Minimap({
     },
     {
       selector: 'aside',
-      imageUrl: rectangleSVGUrl,
+      imageUrl: squareSVGUrl,
     },
     {
       selector: 'footer',
@@ -30,7 +30,7 @@ const minimap = new Minimap({
       childElements: [
         {
           selector: 'li',
-          imageUrl: rectangleSVGUrl,
+          imageUrl: squareSVGUrl,
         },
       ],
       render(element: HTMLElement): string {
