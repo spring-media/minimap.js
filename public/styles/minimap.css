@@ -8,7 +8,7 @@
 
 /* Disable interactivity when loading. */
 .minimap.minimap--is-loading::before {
-  content: '';
+  content: "";
   inset: 0;
   pointer-events: all;
   position: absolute;
@@ -55,7 +55,7 @@
 
 .minimap--has-start-gradient::before {
   background: linear-gradient(to bottom, rgba(255, 255, 255, 20%) 0%, transparent 100%);
-  content: '';
+  content: "";
   height: 50px;
   left: 0;
   position: absolute;
@@ -66,7 +66,7 @@
 .minimap--has-end-gradient::after {
   background: linear-gradient(to top, rgba(255, 255, 255, 20%) 0%, transparent 100%);
   bottom: 0;
-  content: '';
+  content: "";
   height: 50px;
   left: 0;
   position: absolute;

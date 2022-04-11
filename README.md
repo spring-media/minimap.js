@@ -7,7 +7,7 @@
     </p>
 </div>
 
-## Install
+## Installation
 
 ```bash
 npm install minimap.js
@@ -19,7 +19,6 @@ npm install minimap.js
 import { Minimap } from 'minimap.js';
 
 const minimap = new Minimap({
-  theme: 'custom-minimap-theme',
   elements: [
     {
       selector: 'p',
@@ -33,6 +32,25 @@ const minimap = new Minimap({
 
 minimap.render();
 ```
+
+You also need to add the following stylesheets to your HTML file:
+
+```html
+<link rel="stylesheet" href="minimap.css" />
+<link rel="stylesheet" href="themes/default-theme.css" />
+```
+
+## Theming
+
+In case you want to use a different layout, you can use the `theme` option. When doing so, it is not necessary anymore to add the `default-theme.css` file to your HTML file. Instead, you need to provide your own styles.
+
+```ts
+new Minimap({
+  theme: 'custom-theme',
+});
+```
+
+In a custom theme all selectors from `minimap.css` can be used to style the minimap elements. Take a look at the `default-theme.css` file for an example.
 
 ## Development
 
@@ -114,7 +132,7 @@ render?(element: HTMLElement): string;
 condition?(element: HTMLElement): boolean;
 ```
 
-`selector: string;`:
+`selector: string`:
 
 ```ts
 new Minimap({
@@ -141,7 +159,7 @@ new Minimap({
 });
 ```
 
-When an image url is defined, the selected element will be rendered as an image.
+The selected element will be rendered as an image when `imageUrl` is set.
 
 `backgroundColor: string`:
 
@@ -207,7 +225,7 @@ new Minimap({
 });
 ```
 
-The render method is called for each selected element. It can be used e.g. for extracting the inner text of an element.
+The `render` method is called for each selected element. It can be used e.g. for extracting the inner text of an element.
 
 `condition(element: HTMLElement): boolean`:
 
@@ -224,7 +242,7 @@ new Minimap({
 });
 ```
 
-The condition method is called for each selected element. It can be used e.g. to filter out elements that do not have child nodes.
+The `condition` method is called for each selected element. It can be used e.g. to filter out elements that do not have child nodes.
 
 ## Contribution
 
