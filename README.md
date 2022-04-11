@@ -10,13 +10,13 @@
 ## Installation
 
 ```bash
-npm install minimap.js
+npm install @weltn24/minimap.js
 ```
 
 ## Usage
 
 ```ts
-import { Minimap } from 'minimap.js';
+import { Minimap } from '@weltn24/minimap.js';
 
 const minimap = new Minimap({
   elements: [
