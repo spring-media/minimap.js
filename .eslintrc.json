@@ -10,11 +10,7 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "plugins": [
-    "@typescript-eslint",
-    "prettier",
-    "import"
-  ],
+  "plugins": ["@typescript-eslint", "prettier", "import"],
   "rules": {
     "prettier/prettier": "error",
     "import/no-extraneous-dependencies": [
@@ -43,10 +39,7 @@
   },
   "settings": {
     "import/parsers": {
-      "@typescript-eslint/parser": [
-        ".ts",
-        ".tsx"
-      ]
+      "@typescript-eslint/parser": [".ts", ".tsx"]
     },
     "import/resolver": {
       "typescript": {

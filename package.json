@@ -30,8 +30,8 @@
     "lint": "npm run eslint && npm run stylelint",
     "lint:fix": "npm run eslint:fix && npm run stylelint:fix",
     "prepare": "husky install",
-    "prettier": "prettier --check 'src/**/*.ts'",
-    "prettier:fix": "prettier --write 'src/**/*.ts'",
+    "prettier": "prettier --check '**/*.{css,html,js,json,md,yml}'",
+    "prettier:fix": "prettier --write '**/*.{css,html,js,json,md,yml}'",
     "preview": "vite preview",
     "stylelint": "stylelint 'public/**/*.css'",
     "stylelint:fix": "npm run stylelint -- --fix",
@@ -78,6 +78,7 @@
     "vite": "2.9.1"
   },
   "lint-staged": {
+    "*.{css,html,js,json,md,yml}": "npm run prettier:fix",
     "src/**/*.ts": "npm run eslint:fix",
     "src/**/*.css'": "npm run stylelint:fix"
   },

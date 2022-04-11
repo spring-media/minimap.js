@@ -55,7 +55,7 @@ Creates a new minimap. See [MinimapOptions](#MinimapOptions) for details.
 ### render
 
 ```ts
-render()
+render();
 ```
 
 Renders the minimap.
@@ -63,7 +63,7 @@ Renders the minimap.
 ### destroy
 
 ```ts
-destroy()
+destroy();
 ```
 
 Destroys the minimap.
@@ -71,7 +71,7 @@ Destroys the minimap.
 ### getElements
 
 ```ts
-getElements()
+getElements();
 ```
 
 Returns all HTML elements of the minimap.
@@ -83,9 +83,11 @@ on(event: MinimapEvent, callback: VoidFunction)()
 ```
 
 Registers event listeners. `MinimapEvent` is a union of all possible events:
+
 - `minimap.scroll`
 
 #### MinimapOptions
+
 ```ts
 elements?: ElementConfig[];
 staticElements?: HTMLElement[];
@@ -113,6 +115,7 @@ condition?(element: HTMLElement): boolean;
 ```
 
 `selector: string;`:
+
 ```ts
 new Minimap({
   elements: [
@@ -122,9 +125,11 @@ new Minimap({
   ],
 });
 ```
+
 Defines which elements of the page should be shown in the minimap.
 
 `imageUrl: string`:
+
 ```ts
 new Minimap({
   elements: [
@@ -135,9 +140,11 @@ new Minimap({
   ],
 });
 ```
+
 When an image url is defined, the selected element will be rendered as an image.
 
 `backgroundColor: string`:
+
 ```ts
 new Minimap({
   elements: [
@@ -148,9 +155,11 @@ new Minimap({
   ],
 });
 ```
+
 The selected element will be rendered with the defined background color.
 
 `classes: string[]`:
+
 ```ts
 new Minimap({
   elements: [
@@ -161,9 +170,11 @@ new Minimap({
   ],
 });
 ```
+
 The selected element will be rendered with the defined class(es).
 
 `childElements: ElementConfig[]`:
+
 ```ts
 new Minimap({
   elements: [
@@ -178,9 +189,11 @@ new Minimap({
   ],
 });
 ```
+
 The selected element and all selected child elements will be rendered in the minimap.
 
 `render(element: HTMLElement): string`:
+
 ```ts
 new Minimap({
   elements: [
@@ -193,9 +206,11 @@ new Minimap({
   ],
 });
 ```
+
 The render method is called for each selected element. It can be used e.g. for extracting the inner text of an element.
 
 `condition(element: HTMLElement): boolean`:
+
 ```ts
 new Minimap({
   elements: [
@@ -208,6 +223,7 @@ new Minimap({
   ],
 });
 ```
+
 The condition method is called for each selected element. It can be used e.g. to filter out elements that do not have child nodes.
 
 ## Contribution

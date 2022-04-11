@@ -3,10 +3,7 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
+    "lib": ["ESNext", "DOM"],
     "moduleResolution": "Node",
     "strict": true,
     "sourceMap": true,
@@ -16,15 +13,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "node_modules/karma-viewport"
-    ],
+    "typeRoots": ["node_modules/@types", "node_modules/karma-viewport"]
   },
-  "include": [
-    "vite.config.ts",
-    "src",
-    "jasmine",
-    "playground"
-  ],
+  "include": ["vite.config.ts", "src", "jasmine", "playground"]
 }

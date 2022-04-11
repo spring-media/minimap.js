@@ -32,11 +32,7 @@ module.exports = function (config) {
       },
       exclude: ['node_modules'],
       coverageOptions: {
-        exclude: [
-          /\.(d|spec)\.ts$/i,
-          /utils\/test-utils\.ts$/,
-          /jasmine/
-        ],
+        exclude: [/\.(d|spec)\.ts$/i, /utils\/test-utils\.ts$/, /jasmine/],
       },
       reports: {
         text: null, // Prints a coverage table in the console.
