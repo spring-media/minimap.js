@@ -1,3 +1,4 @@
-<svg viewBox="0 0 20.969 20.969" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <path d="m0 6.504h20.969v7.961h-20.969z" fill="#fff"/>
+<svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <rect x="0" y="0" width="150" height="150"
+  style="fill:white" />
 </svg>

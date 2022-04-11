@@ -10,9 +10,9 @@ import {
 } from './utils';
 
 export type MinimapOptions = {
+  elements?: ElementConfig[];
   pageContainer?: HTMLElement;
   staticElements?: HTMLElement[];
-  dynamicElements?: ElementConfig[];
   theme?: string;
 };
 
@@ -47,16 +47,12 @@ export class Minimap {
   private readonly minimapDragElement: HTMLElement;
   private readonly pageContainerElement: HTMLElement;
   private scaleFactor: number;
-  private viewportContainerScrollFactor: number;
-  private contentContainerScrollFactor: number;
 
   constructor(private readonly options: MinimapOptions = {}) {
     this.pageContainerElement = options.pageContainer || document.body;
     this.minimapContentElement = createElement(htmlTemplates.content);
     this.minimapDragElement = createElement(htmlTemplates.dragContainer);
     this.scaleFactor = 1;
-    this.contentContainerScrollFactor = 1;
-    this.viewportContainerScrollFactor = 1;
 
     const viewportElement = createElement(htmlTemplates.viewport);
     viewportElement.appendChild(this.minimapContentElement);
@@ -112,7 +108,7 @@ export class Minimap {
 
   private renderContent(): void {
     this.setLoadingClass();
-    this.updateFactors();
+    this.setScaleFactor();
     this.setContentHeight();
     this.setMaxViewportHeight();
     this.setDragElementPosition();
@@ -129,6 +125,17 @@ export class Minimap {
   // Otherwise, the drag container could be scrolled until the end of the minimap.
   private setMaxViewportHeight() {
     this.minimapViewportElement.style.maxHeight = `${this.minimapContentElement.offsetHeight}px`;
+  }
+
+  private getViewportScrollFactor() {
+    return (
+      (getPageHeightInPx() - getViewportHeightInPx()) /
+      (this.minimapViewportElement.offsetHeight - this.minimapDragElement.clientHeight)
+    );
+  }
+
+  private getContentContainerScrollFactor(): number {
+    return getPageHeightInPx() / this.minimapContentElement.offsetHeight;
   }
 
   private setContentHeight() {
@@ -155,12 +162,8 @@ export class Minimap {
     window.addEventListener('resize', this.debouncedRenderContent);
   }
 
-  private updateFactors(): void {
+  private setScaleFactor(): void {
     this.scaleFactor = this.minimapRootElement.clientWidth / this.pageContainerElement.clientWidth;
-    this.viewportContainerScrollFactor =
-      (getPageHeightInPx() - getViewportHeightInPx()) /
-      (this.minimapViewportElement.offsetHeight - this.minimapDragElement.clientHeight);
-    this.contentContainerScrollFactor = getPageHeightInPx() / this.minimapContentElement.offsetHeight;
   }
 
   private throttledScrollListener = throttle(() => {
@@ -182,7 +185,7 @@ export class Minimap {
   }
 
   private setDragElementPosition(): void {
-    const marginTopInPx = window.scrollY / this.viewportContainerScrollFactor;
+    const marginTopInPx = window.scrollY / this.getViewportScrollFactor();
 
     this.minimapDragElement.style.transform = `translateY(${marginTopInPx}px)`;
   }
@@ -229,7 +232,7 @@ export class Minimap {
 
   private updateScrollPositionOnDragMove = (event: MouseEvent): void => {
     const centeredDistance = this.getCenteredDistanceToTopOfPageInPx(event);
-    const scrollYPosition = centeredDistance * this.viewportContainerScrollFactor;
+    const scrollYPosition = centeredDistance * this.getViewportScrollFactor();
 
     window.scrollTo({ top: scrollYPosition });
   };
@@ -237,7 +240,7 @@ export class Minimap {
   private updateScrollPositionOnViewportClick = (event: MouseEvent): void => {
     const centeredDistance = this.getCenteredDistanceToTopOfPageInPx(event);
     const scrollYPosition =
-      (this.getContentElementTranslateYValue() + centeredDistance) * this.contentContainerScrollFactor;
+      (this.getContentElementTranslateYValue() + centeredDistance) * this.getContentContainerScrollFactor();
 
     window.scrollTo({ top: scrollYPosition });
   };
@@ -249,10 +252,10 @@ export class Minimap {
   }
 
   private getDynamicElements(): HTMLElement[] {
-    const { dynamicElements = [] } = this.options;
+    const { elements = [] } = this.options;
     const fullHeightContainerScrollFactor = this.minimapContentElement.clientHeight / getPageHeightInPx();
 
-    return dynamicElements.reduce((previousElements: HTMLElement[], elementConfig: ElementConfig) => {
+    return elements.reduce((previousElements: HTMLElement[], elementConfig: ElementConfig) => {
       return [...previousElements, ...this.createElements(elementConfig, fullHeightContainerScrollFactor)];
     }, []);
   }

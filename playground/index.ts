@@ -5,7 +5,7 @@ import 'modern-css-reset/dist/reset.css';
 import './style.css';
 
 const minimap = new Minimap({
-  dynamicElements: [
+  elements: [
     {
       selector: 'header',
       classes: ['minimap-header-class'],

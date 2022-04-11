@@ -42,7 +42,7 @@ describe('Minimap', () => {
         createElement('<div class="minimap-static-element-1">Static Element 1</div>'),
         createElement('<div class="minimap-static-element-2">Static Element 2</div>'),
       ],
-      dynamicElements: [
+      elements: [
         {
           selector: 'header',
           classes: ['minimap-header-element'],
@@ -73,7 +73,7 @@ describe('Minimap', () => {
 
   it('should define the content of a minimap element by a render method', () => {
     minimap = new Minimap({
-      dynamicElements: [
+      elements: [
         {
           selector: 'p',
           classes: ['minimap-p-element'],
@@ -92,7 +92,7 @@ describe('Minimap', () => {
 
   it('should render elements when they met a condition', () => {
     minimap = new Minimap({
-      dynamicElements: [
+      elements: [
         {
           selector: 'p',
           classes: ['minimap-p-element'],
@@ -114,7 +114,7 @@ describe('Minimap', () => {
 
   it('should set the background color of an element', () => {
     minimap = new Minimap({
-      dynamicElements: [
+      elements: [
         {
           selector: 'header',
           classes: ['minimap-header-element'],
@@ -160,11 +160,11 @@ describe('Minimap', () => {
 
     await scrollToYPosition((PAGE_HEIGHT_IN_PX - VIEWPORT_HEIGHT_IN_PX) / 2);
     clock.tick(THROTTLE_DEFAULT_WAIT_TIME_IN_MS);
-    expect(minimap.getElements().dragContainer.style.transform).toEqual('translateY(500px)');
+    expect(minimap.getElements().dragContainer.style.transform).toEqual('translateY(450px)');
 
     await scrollToYPosition(PAGE_HEIGHT_IN_PX - VIEWPORT_HEIGHT_IN_PX);
     clock.tick(THROTTLE_DEFAULT_WAIT_TIME_IN_MS);
-    expect(minimap.getElements().dragContainer.style.transform).toEqual('translateY(1000px)');
+    expect(minimap.getElements().dragContainer.style.transform).toEqual('translateY(900px)');
   });
 
   it('should scroll to a specific position when clicked within the minimap viewport', async () => {
@@ -178,15 +178,14 @@ describe('Minimap', () => {
     };
     minimap = new Minimap().render();
 
-    (document.elementFromPoint(950, 600) as HTMLElement).click();
-
+    // Just some random click within the minimap viewport.
     simulateViewportClick(950, 540);
     await waitForScrollEvent();
     clock.tick(THROTTLE_DEFAULT_WAIT_TIME_IN_MS);
 
-    expect(window.scrollY).toBe((PAGE_HEIGHT_IN_PX - VIEWPORT_HEIGHT_IN_PX) / 2);
-    expect(minimap.getElements().content.style.transform).toEqual('translateY(-2000px)');
-    expect(minimap.getElements().dragContainer.style.transform).toEqual('translateY(500px)');
+    expect(window.scrollY).toBe(4_900);
+    expect(minimap.getElements().content.style.transform).toEqual('translateY(-400px)');
+    expect(minimap.getElements().dragContainer.style.transform).toEqual('translateY(90px)');
   });
 
   it('should not show a start gradient when the page was not scrolled down', async () => {
