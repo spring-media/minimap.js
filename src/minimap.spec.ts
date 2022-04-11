@@ -14,7 +14,9 @@ describe('Minimap', () => {
   beforeEach(() => {
     // Cast is necessary as Sinon types are wrong. https://sinonjs.org/releases/latest/fake-timers/#var-clock--sinonusefaketimersconfig says all
     // the config from https://github.com/sinonjs/fake-timers/#var-clock--faketimersinstallconfig can be used.
-    clock = sinon.useFakeTimers({ shouldClearNativeTimers: true } as unknown as Partial<SinonFakeTimersConfig>);
+    clock = sinon.useFakeTimers({
+      shouldClearNativeTimers: true,
+    } as unknown as Partial<SinonFakeTimersConfig>);
     fixture = renderHtml({ pageHeightInPx: PAGE_HEIGHT_IN_PX });
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     viewport.set(1_000 + scrollbarWidth, VIEWPORT_HEIGHT_IN_PX);

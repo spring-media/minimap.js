@@ -16,12 +16,7 @@
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": [
-          "vite.config.ts",
-          "jasmine/**/*.ts",
-          "playground/**/*.ts",
-          "src/**/*.spec.ts"
-        ]
+        "devDependencies": ["vite.config.ts", "jasmine/**/*.ts", "playground/**/*.ts", "src/**/*.spec.ts"]
       }
     ],
     "lines-between-class-members": "off",

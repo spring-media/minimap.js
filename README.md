@@ -1,4 +1,4 @@
-<div style="text-align: center">
+<div align="center">
     <h1>Minimap.js</h1>
     <p>A minimap for web pages.</p>
     <p>
@@ -37,6 +37,9 @@ You also need to add the following stylesheets to your HTML file:
 
 ```html
 <link rel="stylesheet" href="minimap.css" />
+```
+
+```html
 <link rel="stylesheet" href="themes/default-theme.css" />
 ```
 
