@@ -63,6 +63,8 @@ npm run dev
 
 Open http://localhost:3000/ in your browser.
 
+The development server uses the `index.html` file from the root directory.
+
 ## API
 
 ### constructor
