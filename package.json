@@ -24,7 +24,6 @@
     "build": "tsc && vite build && npm run build:types",
     "build:types": "tsc --project tsconfig.types.json && move-cli ./dist/types/minimap.d.ts ./dist/index.d.ts && del-cli ./dist/types",
     "commit": "cz",
-    "coverage": "vitest run --coverage",
     "dev": "vite",
     "eslint": "eslint 'src/**/*.ts'",
     "eslint:fix": "eslint --fix 'src/**/*.ts'",

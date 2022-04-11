@@ -26,6 +26,8 @@ export type ElementConfig = {
   condition?(element: HTMLElement): boolean;
 };
 
+export type MinimapEvent = 'minimap.scroll';
+
 const htmlTemplates = {
   minimap: '<div class="minimap"></div>',
   viewport: '<div class="minimap__viewport"></div>',
@@ -46,13 +48,11 @@ export class Minimap {
   private readonly minimapContentElement: HTMLElement;
   private readonly minimapDragElement: HTMLElement;
   private readonly pageContainerElement: HTMLElement;
-  private scaleFactor: number;
 
   constructor(private readonly options: MinimapOptions = {}) {
     this.pageContainerElement = options.pageContainer || document.body;
     this.minimapContentElement = createElement(htmlTemplates.content);
     this.minimapDragElement = createElement(htmlTemplates.dragContainer);
-    this.scaleFactor = 1;
 
     const viewportElement = createElement(htmlTemplates.viewport);
     viewportElement.appendChild(this.minimapContentElement);
@@ -76,7 +76,7 @@ export class Minimap {
     return this;
   }
 
-  public on(event: string, callback: VoidFunction): void {
+  public on(event: MinimapEvent, callback: VoidFunction): void {
     this.minimapRootElement.addEventListener(event, callback);
   }
 
@@ -108,7 +108,6 @@ export class Minimap {
 
   private renderContent(): void {
     this.setLoadingClass();
-    this.setScaleFactor();
     this.setContentHeight();
     this.setMaxViewportHeight();
     this.setDragElementPosition();
@@ -139,7 +138,7 @@ export class Minimap {
   }
 
   private setContentHeight() {
-    this.minimapContentElement.style.height = `${getPageHeightInPx() * this.scaleFactor}px`;
+    this.minimapContentElement.style.height = `${getPageHeightInPx() * this.getScaleFactor()}px`;
   }
 
   private setLoadingClass(): void {
@@ -162,8 +161,8 @@ export class Minimap {
     window.addEventListener('resize', this.debouncedRenderContent);
   }
 
-  private setScaleFactor(): void {
-    this.scaleFactor = this.minimapRootElement.clientWidth / this.pageContainerElement.clientWidth;
+  private getScaleFactor(): number {
+    return this.minimapRootElement.clientWidth / this.pageContainerElement.clientWidth;
   }
 
   private throttledScrollListener = throttle(() => {
@@ -181,7 +180,7 @@ export class Minimap {
   }
 
   private setDragElementHeight(): void {
-    this.minimapDragElement.style.height = `${getViewportHeightInPx() * this.scaleFactor}px`;
+    this.minimapDragElement.style.height = `${getViewportHeightInPx() * this.getScaleFactor()}px`;
   }
 
   private setDragElementPosition(): void {
@@ -302,9 +301,7 @@ export class Minimap {
         }
 
         if (imageUrl) {
-          const image = document.createElement('img');
-          image.setAttribute('src', imageUrl);
-          newElement.appendChild(image);
+          newElement.appendChild(createElement(`<img src="${imageUrl}" alt=""/>`));
         }
 
         const renderedChildElements: HTMLElement[] = childElements.reduce(
