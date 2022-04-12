@@ -102,7 +102,7 @@ Returns all HTML elements of the minimap.
 ### on
 
 ```ts
-on(event: MinimapEvent, callback: VoidFunction)()
+on(event: MinimapEvent, callback: VoidFunction);
 ```
 
 Registers event listeners. `MinimapEvent` is a union of all possible events:
