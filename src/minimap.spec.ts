@@ -114,6 +114,52 @@ describe('Minimap', () => {
     expect(allParagraphElements[1]).toHaveTextContent('Text 3');
   });
 
+  it('should render elements at their respective positions', () => {
+    minimap = new Minimap({
+      elements: [
+        {
+          selector: 'header',
+          classes: ['header-element'],
+        },
+        {
+          selector: 'main',
+          classes: ['main-element'],
+        },
+        {
+          selector: 'footer',
+          classes: ['footer-element'],
+        },
+      ],
+    }).render();
+
+    expect(document.querySelector('.header-element')).toHaveStyle('top: 0px; left: 5px');
+    expect(document.querySelector('.main-element')).toHaveStyle('top: 500px; left: 0px');
+    expect(document.querySelector('.footer-element')).toHaveStyle('top: 4500px; left: 0px');
+  });
+
+  it('should render elements with their respective dimensions', () => {
+    minimap = new Minimap({
+      elements: [
+        {
+          selector: 'header',
+          classes: ['header-element'],
+        },
+        {
+          selector: 'main',
+          classes: ['main-element'],
+        },
+        {
+          selector: 'footer',
+          classes: ['footer-element'],
+        },
+      ],
+    }).render();
+
+    expect(document.querySelector('.header-element')).toHaveStyle('width: 90px; height: 500px');
+    expect(document.querySelector('.main-element')).toHaveStyle('width: 50px; height: 4000px');
+    expect(document.querySelector('.footer-element')).toHaveStyle('width: 100px; height: 500px');
+  });
+
   it('should set the background color of an element', () => {
     minimap = new Minimap({
       elements: [
