@@ -52,4 +52,4 @@ npm run lint
 6. PRs must be rebased before merge.
 7. PR should be reviewed by at least one maintainer prior to merging.`
 
-You don't need to worry about code style as long as you have installed the dev dependencies – modified files should automatically be formatted with Prettier when committing (via [Git Hooks](https://git-scm.com/docs/githooks)).
+You don't need to worry about code style as long as you have installed the dev dependencies – modified files should automatically be formatted with Prettier when committing (via [Git Hooks](https://git-scm.com/docs/githooks)). For committing please run `npm run commit` and you will get the prompts needed to start a commit.
