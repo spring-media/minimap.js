@@ -1,11 +1,11 @@
 import {
   createElement,
   debounce,
-  dimensions,
+  getDimensions,
   getPageHeightInPx,
-  getScrollInPercentageAsDecimal,
+  getScrollDepthInPercentageAsDecimal,
   getViewportHeightInPx,
-  position,
+  getPosition,
   throttle,
 } from './utils';
 
@@ -195,7 +195,7 @@ export class Minimap {
 
   private getContentElementTranslateYValue(): number {
     return Math.abs(
-      getScrollInPercentageAsDecimal() *
+      getScrollDepthInPercentageAsDecimal() *
         (this.minimapViewportElement.clientHeight - this.minimapContentElement.offsetHeight),
     );
   }
@@ -245,7 +245,7 @@ export class Minimap {
   };
 
   private getCenteredDistanceToTopOfPageInPx(event: MouseEvent): number {
-    const distanceBetweenClickPositionAndTopOfPageInPx = event.pageY - position(this.minimapViewportElement).top;
+    const distanceBetweenClickPositionAndTopOfPageInPx = event.pageY - getPosition(this.minimapViewportElement).top;
 
     return distanceBetweenClickPositionAndTopOfPageInPx - this.minimapDragElement.clientHeight / 2;
   }
@@ -279,8 +279,8 @@ export class Minimap {
       .filter(isAtLeastOnePixelHigh)
       .filter(conditionIsMet)
       .reduce((previousElements: HTMLElement[], element: HTMLElement) => {
-        const { height, width } = dimensions(element);
-        const { left, top } = position(element, this.pageContainerElement);
+        const { height, width } = getDimensions(element);
+        const { left, top } = getPosition(element, this.pageContainerElement);
         const newElement = createElement(htmlTemplates.element);
 
         newElement.style.top = `${top * fullHeightContainerScrollFactor}px`;
@@ -324,10 +324,10 @@ export class Minimap {
   }
 
   private setStartAndEndGradients(): void {
-    if (getScrollInPercentageAsDecimal() > 0) {
+    if (getScrollDepthInPercentageAsDecimal() > 0) {
       this.minimapViewportElement.classList.add(cssClasses.startGradient);
 
-      if (getScrollInPercentageAsDecimal() < 1) {
+      if (getScrollDepthInPercentageAsDecimal() < 1) {
         this.minimapViewportElement.classList.add(cssClasses.endGradient);
       } else {
         this.minimapViewportElement.classList.remove(cssClasses.endGradient);

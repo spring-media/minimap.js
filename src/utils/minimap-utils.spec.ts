@@ -2,11 +2,11 @@ import sinon, { SinonFakeTimers, SinonSpy } from 'sinon';
 import {
   createElement,
   debounce,
-  dimensions,
+  getDimensions,
   getPageHeightInPx,
-  getScrollInPercentageAsDecimal,
+  getScrollDepthInPercentageAsDecimal,
   getViewportHeightInPx,
-  position,
+  getPosition,
   throttle,
 } from './minimap-utils';
 
@@ -32,7 +32,7 @@ describe('Minimap Utils', () => {
 
   it('should get the position of an element relative to the whole page', () => {
     renderHtml(`<div style="position: absolute; top: 200px; left: 300px" id="element">Element</div>`);
-    expect(position(document.getElementById('element')!)).toEqual({ left: 300, top: 200 });
+    expect(getPosition(document.getElementById('element')!)).toEqual({ left: 300, top: 200 });
   });
 
   it('should get the position of an element relative to a parent element', () => {
@@ -41,7 +41,7 @@ describe('Minimap Utils', () => {
         <div style="position: absolute; top: 500px; left: 100px" id="element-child">Element</div>
     </div>
     `);
-    expect(position(document.getElementById('element-child')!, document.getElementById('element-parent')!)).toEqual({
+    expect(getPosition(document.getElementById('element-child')!, document.getElementById('element-parent')!)).toEqual({
       left: 100,
       top: 500,
     });
@@ -49,14 +49,14 @@ describe('Minimap Utils', () => {
 
   it('should get the dimensions of an element', () => {
     renderHtml(`<div style="width: 100px; height: 200px" id="element">Element</div>`);
-    expect(dimensions(document.getElementById('element')!)).toEqual({ width: 100, height: 200 });
+    expect(getDimensions(document.getElementById('element')!)).toEqual({ width: 100, height: 200 });
   });
 
-  it('should get the scroll position in percentage as decimal', () => {
+  it('should get the scroll depth in percentage as decimal', () => {
     viewport.set(1_000, 1_000);
     renderHtml(`<div style="width: 100%; height: 11000px">Content</div>`);
     window.scrollTo(0, 1_000);
-    expect(getScrollInPercentageAsDecimal()).toEqual(0.1);
+    expect(getScrollDepthInPercentageAsDecimal()).toEqual(0.1);
   });
 
   it('should debounce calls of a method for a specific time', () => {

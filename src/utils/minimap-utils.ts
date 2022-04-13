@@ -15,18 +15,18 @@ export function getPageHeightInPx(): number {
   return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
 }
 
-export function dimensions(element: HTMLElement): Dimensions {
+export function getDimensions(element: HTMLElement): Dimensions {
   const { width, height } = element.getBoundingClientRect();
 
   return { width, height };
 }
 
-export function position(element: HTMLElement, parentElement?: HTMLElement): Position {
+export function getPosition(element: HTMLElement, parentElement?: HTMLElement): Position {
   const pos: Position = { left: 0, top: 0 };
 
   if (parentElement) {
-    const thisPos = position(element);
-    const parentPos = position(parentElement);
+    const thisPos = getPosition(element);
+    const parentPos = getPosition(parentElement);
 
     pos.left = thisPos.left - parentPos.left;
     pos.top = thisPos.top - parentPos.top;
@@ -40,7 +40,7 @@ export function position(element: HTMLElement, parentElement?: HTMLElement): Pos
   return pos;
 }
 
-export function getScrollInPercentageAsDecimal(): number {
+export function getScrollDepthInPercentageAsDecimal(): number {
   const pageHeight = getPageHeightInPx();
   const viewportHeight = getViewportHeightInPx();
   const scrollYPos = window.scrollY;
