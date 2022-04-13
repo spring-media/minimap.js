@@ -175,10 +175,10 @@ describe('Minimap', () => {
   });
 
   it('should emit throttled scroll events', async () => {
-    const spy: SinonSpy = sinon.spy();
+    const scrollSpy: SinonSpy = sinon.spy();
     minimap = new Minimap();
 
-    minimap.on('minimap.scroll', spy);
+    minimap.on('minimap.scroll', scrollSpy);
     minimap.render();
 
     await scrollToYPosition(100);
@@ -188,7 +188,7 @@ describe('Minimap', () => {
     await scrollToYPosition(250);
     clock.tick(THROTTLE_DEFAULT_WAIT_TIME_IN_MS);
 
-    expect(spy.callCount).toBe(2);
+    expect(scrollSpy.callCount).toBe(2);
   });
 
   it('should change the position of the content container when scrolled', async () => {
@@ -260,5 +260,24 @@ describe('Minimap', () => {
     clock.tick(THROTTLE_DEFAULT_WAIT_TIME_IN_MS);
 
     expect(minimap.getElements().viewport).not.toHaveClass('minimap--has-end-gradient');
+  });
+
+  it('should remove the minimap from the DOM when the minimap gets destroyed', () => {
+    minimap = new Minimap().render();
+    minimap.destroy();
+
+    expect(document.querySelector('.minimap-default-theme')).not.toBeInTheDocument();
+  });
+
+  it('should remove scroll listener when the minimap gets destroyed', async () => {
+    const scrollSpy = sinon.spy();
+    minimap = new Minimap().render();
+
+    minimap.on('minimap.scroll', scrollSpy);
+    minimap.destroy();
+    await scrollToYPosition(100);
+    clock.tick(THROTTLE_DEFAULT_WAIT_TIME_IN_MS);
+
+    expect(scrollSpy.callCount).toBe(0);
   });
 });
