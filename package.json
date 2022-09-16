@@ -1,6 +1,6 @@
 {
   "name": "@weltn24/minimap.js",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "description": "A minimap for web pages.",
   "author": "Adrian Ramin",
   "license": "MIT",
@@ -13,7 +13,9 @@
     ".": {
       "import": "./dist/minimap.es.js",
       "require": "./dist/minimap.umd.js"
-    }
+    },
+    "./dist/styles/minimap.css": "./dist/styles/minimap.css",
+    "./dist/styles/themes/default-theme.css": "./dist/styles/themes/default-theme.css"
   },
   "types": "./dist/index.d.ts",
   "repository": {
